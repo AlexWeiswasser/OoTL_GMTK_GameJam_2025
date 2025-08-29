@@ -16,7 +16,12 @@ public class wormholeScript : MonoBehaviour
             // Move the player to the other wormhole point
             collision.transform.position = otherPoint.transform.position;
             StartCoroutine(Cooldown());
-        }
+
+			// Funky sound distortion
+			missileScript misScript = collision.gameObject.GetComponent<missileScript>();
+			AudioSource playerAudio = misScript.thrusterSound;
+			StartCoroutine(SoundDistortion(playerAudio));
+		}
     }
 
     IEnumerator Cooldown()
@@ -27,8 +32,13 @@ public class wormholeScript : MonoBehaviour
         yield return new WaitForSeconds(.3f); // Adjust the cooldown duration as needed
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
         otherPoint.GetComponent<CircleCollider2D>().enabled = true;
-        Debug.Log("Wormhole activated, cooldown complete.");
 
     }
 
+    IEnumerator SoundDistortion(AudioSource playerAudio)
+    {
+		playerAudio.pitch = 1f;
+		yield return new WaitForSeconds(.4f);
+        playerAudio.pitch = .5f;
+	}
 }

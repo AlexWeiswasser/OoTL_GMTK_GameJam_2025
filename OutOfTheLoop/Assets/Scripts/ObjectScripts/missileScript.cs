@@ -20,6 +20,7 @@ public class missileScript : MonoBehaviour
     // Bools
     public bool alive = false;
     public bool atStart = true;
+    public bool reallyDead = false;
 
     // Sounds
     [SerializeField] private AudioSource explosionSound;
@@ -73,6 +74,7 @@ public class missileScript : MonoBehaviour
 
             // Movement
             rb.velocity = Vector2.zero;
+            rb.rotation = 0;
 
             // Bool
             alive = false;
@@ -87,6 +89,8 @@ public class missileScript : MonoBehaviour
         {
             if (alive)
             {
+                reallyDead = true;
+
                 spriteRenderer.enabled = false;
                 thrusterSound.Stop();
                 rb.velocity = Vector2.zero;
@@ -98,22 +102,25 @@ public class missileScript : MonoBehaviour
 
     public void Restart()
     {
-        //reset the spaceship position
-        alive = false;
-		col.enabled = false;
-		rb.velocity = new Vector2(0, 0);
-        rb.angularVelocity = 0f;
-        transform.position = startPos;
-        transform.rotation = startRot;
+        if (!reallyDead)
+        {
+            //reset the spaceship position
+            alive = false;
+            col.enabled = false;
+            rb.velocity = new Vector2(0, 0);
+            rb.angularVelocity = 0f;
+            transform.position = startPos;
+            transform.rotation = startRot;
 
-        // Sound/Visual
-        explosion.Stop();
-        explosion.gameObject.SetActive(false);
-        spriteRenderer.enabled = true;
-        thrusterSound.Stop();
+            // Sound/Visual
+            explosion.Stop();
+            explosion.gameObject.SetActive(false);
+            spriteRenderer.enabled = true;
+            thrusterSound.Stop();
 
-        // Bool
-        atStart = true;
+            // Bool
+            atStart = true;
+        }
     }
 
     public void GameStart()
