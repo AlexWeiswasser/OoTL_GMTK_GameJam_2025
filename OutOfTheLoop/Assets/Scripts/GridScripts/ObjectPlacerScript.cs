@@ -175,7 +175,10 @@ public class ObjectPlacerScript : MonoBehaviour
 
     void UpdateText()
     {
-		attractorText.text = attractorAmount.ToString();
-		repulsorText.text = repulsorAmount.ToString();
+        if (attractorAmount != -1)
+        {
+            attractorText.text = attractorAmount.ToString();
+            repulsorText.text = repulsorAmount.ToString();
+        }
 	}
 }

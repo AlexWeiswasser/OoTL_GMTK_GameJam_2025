@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using TMPro;
 using UnityEngine;
 
 public class levelEndScript : MonoBehaviour
@@ -11,6 +12,16 @@ public class levelEndScript : MonoBehaviour
     public string SceneName;
     [SerializeField] private AudioSource cheering;
 
+    public float timer = 0f;
+    private bool levelOver = false;
+
+    private TextMeshProUGUI levelTimer;
+
+    void Update()
+    {
+        if(!levelOver)
+            timer += Time.deltaTime;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -18,15 +29,16 @@ public class levelEndScript : MonoBehaviour
         //Do whatever is needed when the level is over, like particles or annimation and end with loading the next level
         if (collision.gameObject.CompareTag("Player"))
         {
-            levelWinParticles.Play();
-            loadNextLevel();
-            Debug.Log("level win");
+            levelTimer = GameObject.Find("TimerUI").GetComponent<TextMeshProUGUI>();
+            levelTimer.text = timer.ToString();
 
+            levelOver = true;
+            levelWinParticles.Play();
             cheering.Play();
-		}
+        }
     }
 
-    private void loadNextLevel()
+    public void loadNextLevel()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneName);
     }
