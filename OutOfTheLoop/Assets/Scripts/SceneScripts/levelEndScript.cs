@@ -24,12 +24,11 @@ public class levelEndScript : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
     {
-        levelEndUI.SetActive(true);
-
         //Do whatever is needed when the level is over, like particles or annimation and end with loading the next level
         if (collision.gameObject.CompareTag("Player") && !alreadyWon)
         {
-            levelWinParticles.Play();
+			levelEndUI.SetActive(true);
+			levelWinParticles.Play();
             cheering.Play();
             alreadyWon = true;
         }
